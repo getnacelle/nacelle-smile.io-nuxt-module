@@ -1,0 +1,21 @@
+{% assign smile_channel_key = shop.metafields['smile'].channel_key %}
+{% if customer %}
+  {% assign smile_api_secret = shop.metafields['smile'].api_secret %}
+  {% assign smile_customer_id = customer.id %}
+  {% assign smile_digest = smile_customer_id
+    | append: smile_api_secret
+    | md5 %}
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+  if (window.Cookies) {
+    var smileUser = {
+      customerId: {{ smile_customer_id | json }},
+      digest: {{ smile_digest | json }}
+    };
+    
+    Cookies.set('gc_smile_user', smileUser, {path: "", domain: ""});
+  }
+</script>
+
+{% endif %}
