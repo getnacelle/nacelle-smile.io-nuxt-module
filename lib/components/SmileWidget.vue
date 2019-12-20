@@ -1,9 +1,7 @@
 <template>
   <div>
-    <client-only>
-      <div class="sweettooth-init" :data-channel-api-key="smileApiKey" v-bind="customerData" />
-      <div class="sweettooth-launcher" />
-    </client-only>
+    <div class="sweettooth-init" :data-channel-api-key="smileApiKey" v-bind="customerData" />
+    <div class="sweettooth-launcher" />
   </div>
 </template>
 
