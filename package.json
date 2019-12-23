@@ -1,6 +1,6 @@
 {
   "name": "@nacelle/nacelle-smile.io-nuxt-module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Integrates Klaviyo into your Nacelle Nuxt project",
   "license": "MIT",
   "contributors": [
@@ -22,14 +22,17 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "@nacelle/eslint-config-nacelle": "^1.0.9",
     "@nuxtjs/eslint-config": "^1.0.1",
     "babel-eslint": "^10.0.2",
-    "eslint": "^6.3.0",
+    "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.1.1",
     "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^5.2.3"
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.0.1"
   },
   "dependencies": {
     "fs": "0.0.1-security",
