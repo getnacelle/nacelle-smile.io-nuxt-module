@@ -17,11 +17,31 @@ Once you hace Nacelle and Smile set up you can install this module in your proje
 npm install @nacelle/nacelle-smile.io-nuxt-module --save
 ```
 
-After the package has installed, open `nuxt.config.js`. Under `modules` add `@nacelle/nacelle-smile.io-nuxt-module` to the array. Then add `smileKey: '<Your Smile.io API Key>'` to the `nacelle` config object. This will import the module into your project and set the correct Smile settings.
+After the package has installed, open `nuxt.config.js`. Under `modules` add `@nacelle/nacelle-smile.io-nuxt-module` to the array. This will import the module into your project.
 
-To make the Smile widget visible in your store, open up `layouts/default.vue` and paste `<smile-widget />` just before the closing `div` in the template.
+Then add `SMILE_API_KEY` (Public) and `SMILE_SECRET` (Private) to the `.env` file.
+[![Smile](smile-creds.gif)](./smile-creds.gif)
+
+To make the Smile widget visible in your store, open up `layouts/default.vue` and paste `<smile-widget />` just before the closing `div` in the template. Please make sure to put wrap this component with `client-only` tags like so:
+```html
+<client-only>
+  <smile-widget />
+</client-only>
+```
 
 ### Shopify Setup
+
+If using the [Shopify Hosted Solution](https://docs.getnacelle.com/integrations/shopify-accounts.html#shopify-hosted-solution) for Accounts, then follow the additional steps below. 
+
+Otherwise, if using the [Integrated Account Solution](https://docs.getnacelle.com/integrations/shopify-accounts.html#integrated-account-solution) or any other method, you can just pass the customer object into the `SmileWidget` component as props like this:
+
+```html
+<client-only>
+  <smile-widget
+    :customer="customer"
+  />
+</client-only>
+```
 
 To complete the integration a liquid snippet needs to be added to your Shopify theme.
 

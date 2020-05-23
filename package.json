@@ -1,7 +1,7 @@
 {
   "name": "@nacelle/nacelle-smile.io-nuxt-module",
   "version": "0.0.5",
-  "description": "Integrates Klaviyo into your Nacelle Nuxt project",
+  "description": "Integrates Smile into your Nacelle Nuxt project",
   "license": "MIT",
   "contributors": [
     {
@@ -9,7 +9,7 @@
     }
   ],
   "main": "lib/module.js",
-  "repository": "https://github.com/ShopElf/nacelle-smile.io-nuxt-module",
+  "repository": "https://github.com/getnacelle/nacelle-smile.io-nuxt-module",
   "scripts": {
     "dev": "nuxt example",
     "lint": "eslint --ext .js,.vue example lib test",
@@ -35,6 +35,7 @@
     "eslint-plugin-vue": "^6.0.1"
   },
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "fs": "0.0.1-security",
     "path": "^0.12.7"
   }

@@ -1,12 +1,21 @@
 <template>
   <div>
-    <div class="sweettooth-init" :data-channel-api-key="smileApiKey" v-bind="customerData" />
+    <div
+      class="sweettooth-init"
+      :data-channel-api-key="smileApiKey"
+      :data-external-customer-id="customerId"
+      :data-customer-auth-digest="digest"
+    />
     <div class="sweettooth-launcher" />
   </div>
 </template>
 
 <script>
+import md5 from 'crypto-js/md5';
+import AES from 'crypto-js/aes';
+import encUTF8 from 'crypto-js/enc-utf8';
 export default {
+  props: ['customer'],
   data() {
     return {
       customerData: {}
@@ -14,8 +23,34 @@ export default {
   },
   computed: {
     smileApiKey() {
-      if (this.$nacelle && this.$nacelle.smileKey) {
-        return this.$nacelle.smileKey
+      if (this.$smile) {
+        const creds = this.$smile.credentials()
+        return creds.apiKey || ''
+      }
+
+      return ''
+    },
+    digest() {
+      if (this.customerData['data-customer-auth-digest']) {
+        return this.customerData['data-customer-auth-digest']
+      }
+
+      if (this.customer) {
+        const creds = this.$smile.credentials()
+        const bytes  = AES.decrypt(creds.encryptedSecret, this.$nacelle.spaceID);
+        const digest = md5(`${this.customer.id}${bytes.toString(encUTF8)}`)
+        return digest
+      }
+
+      return ''
+    },
+    customerId() {
+      if (this.customerData['data-external-customer-id']) {
+        return this.customerData['data-external-customer-id']
+      }
+
+      if (this.customer) {
+        return this.customer.id
       }
 
       return ''
@@ -30,11 +65,30 @@ export default {
       this.customerData['data-external-customer-id'] = smileData.customerId
       this.customerData['data-customer-auth-digest'] = smileData.digest
     }
+
+    document.onreadystatechange = () => { 
+      if (document.readyState == "complete") { 
+        this.loadScript()
+      } 
+    }
   },
   methods: {
     getCookieValue(a) {
       const b = document.cookie.match('(^|[^;]+)\\s*' + a + '\\s*=\\s*([^;]+)')
       return b ? decodeURIComponent(b.pop()) : ''
+    },
+    loadScript() {
+      // Get the first script element on the page
+      const ref = document.getElementsByTagName( 'script' )[ 0 ];
+
+      // Create a new script element
+      const script = document.createElement( 'script' );
+
+      // Set the script element `src`
+      script.src = '//cdn.sweettooth.io/assets/storefront.js';
+
+      // Inject the script into the DOM
+      ref.parentNode.insertBefore( script, ref );
     }
   }
 }

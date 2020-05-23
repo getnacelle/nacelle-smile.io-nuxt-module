@@ -1,3 +1,4 @@
+static/data
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
@@ -86,3 +87,9 @@ sw.*
 
 # Mac OSX
 .DS_Store
+
+# Storybook
+.out
+
+# Nacelle
+static/data
