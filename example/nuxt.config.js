@@ -55,7 +55,7 @@ export default {
     '@nuxtjs/axios',
     'nuxt-polyfill',
     'vue-currency-filter/nuxt',
-    '~/../lib/module.js'
+    '@nacelle/nacelle-smile.io-nuxt-module'
   ],
 
   router: {

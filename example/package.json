@@ -17,6 +17,7 @@
     "@contentful/rich-text-html-renderer": "^13.4.0",
     "@contentful/rich-text-types": "^14.1.0",
     "@nacelle/nacelle-nuxt-module": "^4.0.0",
+    "@nacelle/nacelle-smile.io-nuxt-module": "getnacelle/nacelle-smile.io-nuxt-module#v1",
     "@nuxtjs/axios": "^5.9.5",
     "@nuxtjs/bulma": "^1.2.7",
     "@nuxtjs/dotenv": "^1.3.0",
