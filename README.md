@@ -28,6 +28,7 @@ modules: [
       secret: process.env.SMILE_SECRET
     }
   ]
+]
 ```
 
 Then add `SMILE_API_KEY` (Public) and `SMILE_SECRET` (Private) to the `.env` file.
