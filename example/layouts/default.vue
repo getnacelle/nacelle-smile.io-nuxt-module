@@ -1,53 +1,72 @@
 <template>
   <div class="app nacelle">
     <global-header ref="header" />
-    <nuxt :style="{'margin-top': `${headerHeight}px`}" />
+    <nuxt :style="{ 'margin-top': `${headerHeight}px` }" />
     <site-footer />
-    <!-- <event-dispatcher /> -->
-    <smile-widget />
+    <cookie-banner />
+    <event-dispatcher />
+    <error-modal />
+    <cart-watch />
+
+    <client-only>
+      <smile-widget />
+    </client-only>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import localforage from 'localforage'
-import { prefetchCollectionsAndContent } from '@nacelle/nacelle-graphql-queries-mixins'
-import GlobalHeader from '~/components/GlobalHeader'
-import SiteFooter from '~/components/SiteFooter'
+import GlobalHeader from '~/components/nacelle/GlobalHeader'
+import SiteFooter from '~/components/nacelle/SiteFooter'
+import EventDispatcher from '~/components/nacelle/EventDispatcher'
+import CookieBanner from '~/components/nacelle/CookieBanner'
+import ErrorModal from '~/components/nacelle/ErrorModal'
+import CartWatch from '~/components/nacelle/CartWatch'
+
 export default {
   components: {
     GlobalHeader,
-    SiteFooter
+    SiteFooter,
+    EventDispatcher,
+    CookieBanner,
+    ErrorModal,
+    CartWatch
   },
   methods: {
     ...mapMutations('cart', ['hideCart', 'setFreeShippingThreshold']),
     ...mapActions('cart', ['updateLocalCart']),
     ...mapActions('user', ['readSession'])
   },
-  mixins: [prefetchCollectionsAndContent],
   data () {
     return {
-      headerHeight: null
+      headerHeight: null,
+      customer: null
     }
   },
   computed: {
     ...mapGetters('space', ['getMetatag'])
   },
-  created () {},
-  mounted () {
-    this.headerHeight = this.$refs.header.$el.clientHeight
+  created() {
+    this.$nacelle.setSpace()
+  },
+  mounted() {
+    if (this.$refs.header) {
+      this.headerHeight = this.$refs.header.$el.clientHeight
+    }
+
     this.updateLocalCart()
     this.setFreeShippingThreshold(100)
 
     this.hideCart()
 
-    if (process.env.DEV_MODE == 'true') {
+    if (process.env.DEV_MODE === 'true') {
       console.log('dev mode active!')
       localforage.clear()
     }
     this.readSession()
   },
-  head () {
+  head() {
     const properties = {}
     const meta = []
     const title = this.getMetatag('title')
@@ -159,7 +178,7 @@ html {
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.1s;
 }
 .page-enter,
 .page-leave-active {

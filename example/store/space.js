@@ -1,13 +1,10 @@
-// import GetSpace from '../queries/getSpace'
-import { getSpace } from '@nacelle/nacelle-graphql-queries-mixins'
-
 export const state = () => ({
   id: '',
   name: '',
   domain: '',
   metafields: [],
   linklists: [],
-  facebookCatalogID: '12345'
+  facebookCatalogID: ''
 })
 
 export const mutations = {
@@ -41,27 +38,112 @@ export const mutations = {
 }
 
 export const getters = {
+  metafieldsObj(state) {
+    if (state.metafields) {
+      return state.metafields.reduce((obj, metafield) => {
+        const { namespace, key, value } = metafield
+
+        if (obj[namespace]) {
+          obj[namespace][key] = value
+        } else {
+          obj[namespace] = {}
+          obj[namespace][key] = value
+        }
+
+        return obj
+      }, {})
+    }
+
+    return {}
+  },
+
   getMetatag: (state) => (tag) => {
-    return state.metafields.find(field => (
-      field.namespace === 'metatag' && field.key === tag
-    ))
+    if (state.metafields) {
+      return state.metafields.find(field => (
+        field.namespace === 'metatag' && field.key === tag
+      ))
+    }
+
+    return {}
+  },
+
+  getMetaNamespace: (state) => (namespace) => {
+    if (state.metafields) {
+      return state.metafields.reduce((obj, metafield) => {
+        if (metafield.namespace === namespace) {
+          obj[metafield.key] = metafield.value
+        }
+
+        return obj
+      }, {})
+    }
+
+    return {}
+  },
+
+  getMetafield: (state) => (namespace, key) => {
+    if (state.metafields) {
+      const metafield = state.metafields.find(field => (
+        field.namespace === namespace && field.key === key
+      ))
+
+      if (metafield) {
+        return metafield.value
+      }
+    }
+
+    return undefined
+  },
+
+  getLinks: (state) => handle => {
+    if (state.linklists) {
+      const linklist = state.linklists.find(
+        linklist => linklist.handle === handle
+      )
+
+      if (linklist) {
+        return linklist.links
+      }
+
+      return []
+    }
+
+    return []
   }
 }
 
 export const actions = {
-  fetchSpaceDetails({ commit }) {
-    let client = this.app.apolloProvider.defaultClient
+  updateSpace({ commit }, space) {
+    if (space) {
+      const { id, name, domain, metafields, linklists } = space
 
-    return getSpace(client).then(data => {
-      if (data && data.data && data.data.getSpace) {
-        const { id, name, domain, metafields, linklists } = data.data.getSpace
-
+      if (id) {
         commit('setId', id)
+      }
+
+      if (name) {
         commit('setName', name)
+      }
+
+      if (domain) {
         commit('setDomain', domain)
+      }
+
+      if (metafields) {
         commit('setMetafields', metafields)
+      }
+
+      if (linklists) {
         commit('setLinklists', linklists)
       }
-    })
+    }
   }
+}
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
 }

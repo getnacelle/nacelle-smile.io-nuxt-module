@@ -1,53 +1,107 @@
+<!--
+/****
+/* Product collections are loaded with the getCollection mixin.
+/* For information about creating collections, please refer to:
+/*
+/* https://docs.getnacelle.com/nuxt/collections.html#adding-content-to-collections-pages
+/****
+-->
 <template>
-  <div class="page page-shop">
+  <div class="page page-shop" v-if="collection">
     <content-hero-banner
       v-if="collection"
       :title="collection.title"
       :backgroundImgUrl="featuredImage"
     />
-    <page-content :page="page" :products="products" />
     <section class="section">
       <div class="container">
         <div class="columns is-multiline">
           <product-grid
-            v-if="products"
+            v-if="products && products.length > 0"
             :products="products"
             :showAddToCart="true"
             :showQuantityUpdate="true"
           />
         </div>
       </div>
-      <div ref="fetchMore" class="fetch-more-component"></div>
+      <observe-emitter v-on:observe="fetchMore" />
     </section>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
-import { getCollection } from '@nacelle/nacelle-graphql-queries-mixins'
-import ProductGrid from '~/components/ProductGrid'
+import getCollection from '~/mixins/getCollection'
+import ContentHeroBanner from '~/components/nacelle/ContentHeroBanner'
+import ProductGrid from '~/components/nacelle/ProductGrid'
+import ObserveEmitter from '~/components/nacelle/ObserveEmitter'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'home',
-  components: { ProductGrid },
-  data() {
-    return {
-      collection: null
-    }
+  name: 'collection',
+  components: {
+    ContentHeroBanner, ProductGrid, ObserveEmitter
   },
-  mixins: [getCollection],
+  mixins: [getCollection()],
   computed: {
-    ...mapGetters('space', ['getMetatag']),
-    products() {
-      if (
-        this.collection &&
-        this.collection.products &&
-        this.collection.products.length
-      ) {
-        return this.collection.products
+    productData() {
+      if (this.products) {
+        return this.products.map(product => {
+          const { tags, variants, ...rest } = product
+
+          /// //////////////////////////
+          /// //////////////////////////
+          // Get product filter facets from variant data
+          const variantOptions = variants.map(variant => {
+            return variant.selectedOptions
+          })
+
+          const variantFacets = variantOptions
+            .reduce((acc, item) => {
+              return acc.concat(item)
+            }, [])
+            .map(option => JSON.stringify(option))
+
+          const facets = Array.from(new Set(variantFacets))
+            .map(option => JSON.parse(option))
+            .map(option => {
+              return { name: option.name.toLowerCase(), value: option.value }
+            })
+
+          /// //////////////////////////
+          /// //////////////////////////
+          // Get product filter facets from tags. Tags should be formatted "filter_property-name_value"
+          const rootFacets = tags.filter(tag => tag.includes('filter'))
+
+          rootFacets.forEach(facet => {
+            const facetFragments = facet.split('_')
+            const facetName = facetFragments[1]
+            const facetValue = () => {
+              const fragments = facetFragments[2].split('-')
+              return fragments
+                .map(fragment => {
+                  return `${fragment
+                    .charAt(0)
+                    .toUpperCase()}${fragment.substring(1)}`
+                })
+                .join(' ')
+            }
+
+            rest[facetName] = facetValue()
+            facets.push({ name: facetName, value: facetValue() })
+          })
+
+          if (product.productType) {
+            facets.push({ name: 'productType', value: product.productType })
+          }
+
+          rest.minPrice = rest.priceRange.min
+
+          return { ...rest, tags, variantOptions, variants, facets }
+        })
       }
 
-      return null
+      return []
     },
+    ...mapGetters('space', ['getMetatag']),
     featuredImage() {
       if (
         this.collection &&
@@ -107,33 +161,12 @@ export default {
         meta
       }
     }
-  },
-  // mounted() {
-  //   if (this.collection && this.collection.products == null) {
-  //     this.$nuxt.error({
-  //       statusCode: 404,
-  //       message: 'That collection could not be found'
-  //     })
-  //   }
-  // }
+  }
 }
 </script>
+
 <style lang="scss" scoped>
-// .products {
-//   display: flex;
-//   flex-wrap: wrap;
-// }
 .product {
-  // width: 20rem;
-  // height: 20rem;
-  // text-decoration: none;
-  // color: black;
-  // display: flex;
-  // flex-direction: column;
-  // margin-bottom: 2rem;
-  // flex-grow: 1;
-  // justify-content: center;
-  // align-items: center;
   .title {
     font-weight: bold;
   }
