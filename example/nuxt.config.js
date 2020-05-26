@@ -56,23 +56,13 @@ export default {
     'nuxt-polyfill',
     'vue-currency-filter/nuxt',
 
-    // Test Module in Production:
-
-    ['@nacelle/nacelle-smile.io-nuxt-module',
+    // Change module pointer for testing in different environments.
+    [(process.env.DEV_MODE ? '~/../lib/module.js' : '@nacelle/nacelle-smile.io-nuxt-module'),
       {
         key: process.env.SMILE_API_KEY,
         secret: process.env.SMILE_SECRET
       }
     ]
-
-    // Test Module in Local Development:
-
-    // ['~/../lib/module.js',
-    //   {
-    //     key: process.env.SMILE_API_KEY,
-    //     secret: process.env.SMILE_SECRET
-    //   }
-    // ]
   ],
 
   router: {

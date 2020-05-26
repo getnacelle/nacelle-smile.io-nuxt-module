@@ -9,7 +9,7 @@
     <cart-watch />
 
     <client-only>
-      <smile-widget :customer="customer" />
+      <smile-widget />
     </client-only>
   </div>
 </template>
@@ -65,14 +65,6 @@ export default {
       localforage.clear()
     }
     this.readSession()
-
-    this.customer = {
-      id: 3393436418183,
-      email: 'caleb@getnacelle.com',
-      first_name: 'Caleb',
-      last_name: 'Bodtorf',
-      accepts_marketing: 'true'
-    }
   },
   head() {
     const properties = {}

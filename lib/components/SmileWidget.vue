@@ -64,6 +64,8 @@ export default {
     if (smileData && smileData.digest && smileData.digest.length > 0) {
       this.customerData['data-external-customer-id'] = smileData.customerId
       this.customerData['data-customer-auth-digest'] = smileData.digest
+      // Needed to update computed properties
+      this.customer = this.customer ? customer : null
     }
 
     document.onreadystatechange = () => { 
