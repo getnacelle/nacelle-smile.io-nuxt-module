@@ -17,7 +17,18 @@ Once you hace Nacelle and Smile set up you can install this module in your proje
 npm install @nacelle/nacelle-smile.io-nuxt-module --save
 ```
 
-After the package has installed, open `nuxt.config.js`. Under `modules` add `@nacelle/nacelle-smile.io-nuxt-module` to the array. This will import the module into your project.
+After the package has installed, open `nuxt.config.js`. Under `modules` add `@nacelle/nacelle-smile.io-nuxt-module` to the array and pass in the Smile `key` and `secret` options. This will import the module into your project.
+
+```js
+modules: [
+  '@nacelle/nacelle-nuxt-module',
+  ['@nacelle/nacelle-smile.io-nuxt-module',
+    {
+      key: process.env.SMILE_API_KEY,
+      secret: process.env.SMILE_SECRET
+    }
+  ]
+```
 
 Then add `SMILE_API_KEY` (Public) and `SMILE_SECRET` (Private) to the `.env` file.
 [![Smile](smile-creds.gif)](./smile-creds.gif)
