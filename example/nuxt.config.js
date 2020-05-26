@@ -55,7 +55,24 @@ export default {
     '@nuxtjs/axios',
     'nuxt-polyfill',
     'vue-currency-filter/nuxt',
-    '@nacelle/nacelle-smile.io-nuxt-module'
+
+    // Test Module in Production:
+
+    ['@nacelle/nacelle-smile.io-nuxt-module',
+      {
+        key: process.env.SMILE_API_KEY,
+        secret: process.env.SMILE_SECRET
+      }
+    ]
+
+    // Test Module in Local Development:
+
+    // ['~/../lib/module.js',
+    //   {
+    //     key: process.env.SMILE_API_KEY,
+    //     secret: process.env.SMILE_SECRET
+    //   }
+    // ]
   ],
 
   router: {
