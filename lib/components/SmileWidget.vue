@@ -18,7 +18,10 @@ export default {
   props: ['customer'],
   data() {
     return {
-      customerData: {}
+      customerData: {
+        id: '',
+        digest: ''
+      }
     }
   },
   computed: {
@@ -31,29 +34,19 @@ export default {
       return ''
     },
     digest() {
-      if (this.customerData['data-customer-auth-digest']) {
-        return this.customerData['data-customer-auth-digest']
-      }
-
-      if (this.customer) {
+      const customer = this.customer || this.customerData
+      if (customer.digest) {
+        return customer.digest
+      } else {
         const creds = this.$smile.credentials()
         const bytes  = AES.decrypt(creds.encryptedSecret, this.$nacelle.spaceID);
-        const digest = md5(`${this.customer.id}${bytes.toString(encUTF8)}`)
+        const digest = md5(`${customer.id}${bytes.toString(encUTF8)}`)
         return digest
       }
-
-      return ''
     },
     customerId() {
-      if (this.customerData['data-external-customer-id']) {
-        return this.customerData['data-external-customer-id']
-      }
-
-      if (this.customer) {
-        return this.customer.id
-      }
-
-      return ''
+      const customer = this.customer || this.customerData
+      return customer.id
     }
   },
   mounted() {
@@ -62,10 +55,8 @@ export default {
       smileCookie.length > 0 ? JSON.parse(smileCookie) : undefined
 
     if (smileData && smileData.digest && smileData.digest.length > 0) {
-      this.customerData['data-external-customer-id'] = smileData.customerId
-      this.customerData['data-customer-auth-digest'] = smileData.digest
-      // Needed to update computed properties
-      this.customer = this.customer ? customer : null
+      this.customerData.id = smileData.customerId
+      this.customerData.digest = smileData.digest
     }
 
     document.onreadystatechange = () => { 
