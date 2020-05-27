@@ -12,7 +12,15 @@
       digest: {{ smile_digest | json }}
     };
     
-    Cookies.set('nacelle_smile_user', JSON.stringify(smileUser), {expires: 30});
+    Cookies.set(
+      'nacelle_smile_user',
+      JSON.stringify(smileUser),
+      {
+        // Allows cookie to be readable from shop.mydomain.com and mydomain.com
+        domain: '.mydomain.com',
+        expires: 30
+      }
+    );
   }
 </script>
 
