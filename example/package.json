@@ -41,7 +41,7 @@
     "lodash.sortby": "^4.7.0",
     "lodash.uniq": "^4.5.0",
     "lodash.uniqwith": "^4.5.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "node-sass": "^4.12.0",
     "nuxt": "^2.11.0",
     "nuxt-merge-asyncdata": "^0.1.1",
