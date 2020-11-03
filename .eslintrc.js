@@ -6,6 +6,7 @@ module.exports = {
     jest: true,
   },
   extends: ['eslint:recommended', 'plugin:vue/essential'],
+  parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 11,
     sourceType: 'module',
