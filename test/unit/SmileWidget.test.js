@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import SmileWidget from './SmileWidget.vue'
+import SmileWidget from '~/components/SmileWidget.vue'
 
 const script = document.createElement('script')
 document.body.appendChild(script)
@@ -16,10 +16,10 @@ const wrapper = mount(SmileWidget, {
       spaceID: 'my-space-id',
     },
     $smile: {
-      credentials: jest.fn().mockImplementation(() => ({
+      credentials: {
         apiKey: 'my-api-key',
         encryptedSecret: 'so-secret',
-      })),
+      },
     },
   },
 })

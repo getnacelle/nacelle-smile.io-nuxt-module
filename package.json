@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "nuxt example",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./lib",
-    "test": "jest ./lib",
+    "test": "jest ./test",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish"
   },
   "files": [
