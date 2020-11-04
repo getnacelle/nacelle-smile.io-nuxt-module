@@ -7,10 +7,7 @@
     <event-dispatcher />
     <error-modal />
     <cart-watch />
-
-    <client-only>
-      <smile-widget />
-    </client-only>
+    <smile-widget />
   </div>
 </template>
 
@@ -38,7 +35,7 @@ export default {
     ...mapActions('cart', ['updateLocalCart']),
     ...mapActions('user', ['readSession'])
   },
-  data () {
+  data() {
     return {
       headerHeight: null,
       customer: null
