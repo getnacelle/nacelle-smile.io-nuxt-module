@@ -15,7 +15,12 @@ import md5 from 'crypto-js/md5'
 import AES from 'crypto-js/aes'
 import encUTF8 from 'crypto-js/enc-utf8'
 export default {
-  props: ['customer'],
+  props: {
+    customer: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       customerData: {
@@ -27,8 +32,8 @@ export default {
   computed: {
     smileApiKey() {
       if (this.$smile) {
-        const creds = this.$smile.credentials()
-        return creds.apiKey || ''
+        const creds = this.$smile.credentials
+        return (creds && creds.apiKey) || ''
       }
 
       return ''
@@ -37,16 +42,18 @@ export default {
       const customer = this.customer || this.customerData
       if (customer.digest) {
         return customer.digest
-      } else {
-        const creds = this.$smile.credentials()
+      } else if (this.$smile) {
+        const creds = this.$smile.credentials
         const bytes = AES.decrypt(creds.encryptedSecret, this.$nacelle.spaceID)
         const digest = md5(`${customer.id}${bytes.toString(encUTF8)}`)
         return digest
+      } else {
+        return ''
       }
     },
     customerId() {
       const customer = this.customer || this.customerData
-      return customer.id
+      return customer && customer.id
     },
   },
   mounted() {
@@ -71,17 +78,16 @@ export default {
       return b ? decodeURIComponent(b.pop()) : ''
     },
     loadScript() {
-      // Get the first script element on the page
-      const ref = document.getElementsByTagName('script')[0]
+      const smileScript = document.createElement('script')
+      smileScript.type = 'text/javascript'
+      smileScript.defer = true
+      smileScript.src = 'https://cdn.sweettooth.io/assets/storefront.js'
 
-      // Create a new script element
-      const script = document.createElement('script')
+      const lastScript = Array.from(
+        document.getElementsByTagName('script')
+      ).pop()
 
-      // Set the script element `src`
-      script.src = '//cdn.sweettooth.io/assets/storefront.js'
-
-      // Inject the script into the DOM
-      ref.parentNode.insertBefore(script, ref)
+      lastScript.insertAdjacentElement('afterend', smileScript)
     },
   },
 }

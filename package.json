@@ -1,6 +1,6 @@
 {
   "name": "@nacelle/nacelle-smile.io-nuxt-module",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Integrates Smile into your Nacelle Nuxt project",
   "license": "MIT",
   "contributors": [
@@ -13,34 +13,32 @@
   "scripts": {
     "dev": "nuxt example",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./lib",
-    "test": "jest ./lib",
+    "test": "jest ./test",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish"
   },
   "files": [
     "lib"
   ],
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.11.0",
-    "@types/jest": "^26.0.8",
-    "@vue/test-utils": "^1.0.3",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@types/jest": "^26.0.15",
+    "@vue/test-utils": "^1.1.1",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^26.2.2",
-    "eslint": "^7.5.0",
+    "babel-jest": "^26.6.2",
+    "eslint": "^7.12.1",
     "eslint-plugin-ejs": "0.0.2",
     "eslint-plugin-vue": "^6.2.2",
-    "husky": "^4.2.5",
-    "jest": "^26.2.2",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5",
-    "vue": "^2.6.11",
-    "vue-jest": "^3.0.6",
-    "vue-template-compiler": "^2.6.11"
+    "husky": "^4.3.0",
+    "jest": "^26.6.2",
+    "lint-staged": "^10.5.1",
+    "prettier": "^2.1.2",
+    "vue": "^2.6.12",
+    "vue-jest": "^3.0.7",
+    "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
-    "crypto-js": "^4.0.0",
-    "fs": "0.0.1-security",
-    "path": "^0.12.7"
+    "crypto-js": "^4.0.0"
   },
   "lint-staged": {
     "src/**/*.(js|ts)": [

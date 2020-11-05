@@ -36,10 +36,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [
-    '@/assets/global.css',
-    'vue-glide-js/dist/vue-glide.css'
-  ],
+  css: ['@/assets/global.css', 'vue-glide-js/dist/vue-glide.css'],
 
   env: {
     nacelleSpaceID: process.env.NACELLE_SPACE_ID,
@@ -57,12 +54,9 @@ export default {
     'vue-currency-filter/nuxt',
 
     // Change module pointer for testing in different environments.
-    [(process.env.DEV_MODE ? '~/../lib/module.js' : '@nacelle/nacelle-smile.io-nuxt-module'),
-      {
-        key: process.env.SMILE_API_KEY,
-        secret: process.env.SMILE_SECRET
-      }
-    ]
+    process.env.DEV_MODE
+      ? '~/../lib/module.js'
+      : '@nacelle/nacelle-smile.io-nuxt-module'
   ],
 
   router: {
@@ -98,6 +92,12 @@ export default {
     /* Required Parameters */
     spaceID: process.env.NACELLE_SPACE_ID,
     token: process.env.NACELLE_GRAPHQL_TOKEN,
+
+    /* Smile Module */
+    smile: {
+      key: process.env.SMILE_API_KEY,
+      secret: process.env.SMILE_SECRET
+    }
 
     /* Optional */
 
@@ -143,7 +143,7 @@ export default {
   generate: {
     concurrency: 5,
     done({ errors }, nuxt) {
-      nuxt.callHook('generate:done', ({ nuxt, errors }))
+      nuxt.callHook('generate:done', { nuxt, errors })
     }
   },
 
@@ -168,6 +168,11 @@ export default {
         useShortDoctype: true
       }
     },
-    transpile: ['@nacelle/nacelle-nuxt-module', '@nacelle/nacelle-tools', 'fuse.js', 'uuidv4']
+    transpile: [
+      '@nacelle/nacelle-nuxt-module',
+      '@nacelle/nacelle-tools',
+      'fuse.js',
+      'uuidv4'
+    ]
   }
 }
