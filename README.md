@@ -1,3 +1,6 @@
+# [DEPRECATED]
+
+This package is deprecated. To integrate a third party script with your Nuxt project, follow our docs here: https://docs.getnacelle.com/nuxt/external-scripts.html
 # Nacelle Smile.io Nuxt Module
 
 Easily integrate [Smile.io](https://smile.io/) loyalty rewards program into your [Nacelle](https://getnacelle.com/) Nuxt project.
