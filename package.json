@@ -1,6 +1,6 @@
 {
   "name": "@nacelle/nacelle-smile.io-nuxt-module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Integrates Smile into your Nacelle Nuxt project",
   "license": "MIT",
   "contributors": [
